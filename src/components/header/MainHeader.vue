@@ -2,15 +2,26 @@
 import { mdiChevronDown, mdiChevronUp, mdiLogout, mdiAccountOutline } from '@mdi/js'
 </script>
 <template>
-  <v-app-bar color="#efeff1">
+  <v-app-bar color="#eaebec" style="border-radius: 15px; height: 8%" :elevation="2">
     <v-spacer></v-spacer>
     <v-menu>
       <template v-slot:activator="{ isActive, props }">
-        <v-avatar v-bind="props" size="40" color="#efeff1" style="border: 2px solid #0f5d84"
+        <v-list-item
+          class="mt-2"
+          style="color: #76737d; font-weight: 900"
+          title="ยินดีต้อนรับ"
+          subtitle="Pattarapol"
+        ></v-list-item>
+        <v-avatar
+          v-bind="props"
+          class="mt-2"
+          size="40"
+          color="#efeff1"
+          style="border: 2px solid #0f5d84"
           ><v-img alt="" src=""></v-img
         ></v-avatar>
 
-        <div class="mx-4">
+        <div class="mx-4 mt-2">
           <v-icon :icon="isActive ? mdiChevronUp : mdiChevronDown" v-bind="props"></v-icon>
         </div>
       </template>
