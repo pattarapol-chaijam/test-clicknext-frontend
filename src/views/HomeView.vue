@@ -1,37 +1,19 @@
 <script setup lang="ts">
 import { mdiAlphaPCircleOutline, mdiStar } from '@mdi/js'
-const cards = [
-  {
-    image: 'https://demo-point-insurance.clicknext.com/images/img-01.png',
-    discount: 'ส่วนลด Sizzler 50 บาท',
-    points: '250',
-    expiryDate: '31 ต.ค. 67'
-  },
-  {
-    image: 'https://demo-point-insurance.clicknext.com/images/1.jpg',
-    discount: 'แลก 200 คะแนนอัพไซส์เครื่องดื่มจาก M เป็น L',
-    points: '500',
-    expiryDate: '15 พ.ย. 67'
-  },
-  {
-    image: 'https://demo-point-insurance.clicknext.com/images/donut.png',
-    discount: 'ส่วนลด Donut 50 บาท',
-    points: '150',
-    expiryDate: '30 ธ.ค. 67'
-  },
-  {
-    image: 'https://demo-point-insurance.clicknext.com/images/kamu.png',
-    discount: 'แลก 200 คะแนนอัพไซส์เครื่องดื่มจาก M เป็น L',
-    points: '300',
-    expiryDate: '01 ม.ค. 68'
-  },
-  {
-    image: 'https://demo-point-insurance.clicknext.com/images/kamu.png',
-    discount: 'แลก 200 คะแนนอัพไซส์เครื่องดื่มจาก M เป็น L',
-    points: '800',
-    expiryDate: '31 ม.ค. 68'
-  }
-]
+import { useUserStore } from '@/stores/user'
+import { useRewardStore } from '@/stores/reward'
+import { onMounted, ref } from 'vue'
+import type User from '@/types/user'
+import type Reward from '@/types/reward'
+const userStore = useUserStore()
+const rewardStore = useRewardStore()
+const users = ref<User>()
+const rewards = ref<Reward[]>()
+const userId = ref(2)
+onMounted(async () => {
+  users.value = await userStore.getUser(userId.value)
+  rewards.value = await rewardStore.getRewards()
+})
 </script>
 
 <template>
@@ -48,7 +30,7 @@ const cards = [
           ></v-avatar>
           <v-col
             ><div class="mt-8 ml-2" style="color: white; font-size: small">ยินดีต้อนรับ</div>
-            <div class="ml-2" style="color: white">ภัทรพล ชัยจำ</div></v-col
+            <div class="ml-2" style="color: white">{{ users?.userName }}</div></v-col
           >
         </v-row>
       </v-container>
@@ -64,7 +46,8 @@ const cards = [
           ></v-img
         ></v-col>
         <v-col align="end" class="pr-7 pt-9">
-          <span style="font-size: 22px; font-weight: bold">8,040 </span><span>คะแนน</span>
+          <span style="font-size: 22px; font-weight: bold">{{ users?.userPoint }} </span
+          ><span> คะแนน</span>
         </v-col>
       </v-row>
       <v-row align="center" style="margin-top: -17px">
@@ -163,7 +146,7 @@ const cards = [
       ><v-col align="end"><a href="https://example.com" class="clickable-text"> See All </a></v-col>
     </v-row>
     <v-row style="margin-top: -10px">
-      <v-col v-for="(card, index) in cards" :key="index" cols="auto">
+      <v-col v-for="reward in rewards" :key="reward.rewardId" cols="auto">
         <v-card
           style="background-color: white"
           rounded="xl"
@@ -171,17 +154,17 @@ const cards = [
           width="260"
           height="300"
         >
-          <v-img :src="card.image" cover height="200px"></v-img>
+          <v-img :src="reward.rewardImg" cover height="200px"></v-img>
           <v-list-item-subtitle style="font-size: 11px" class="ml-2 mt-2">{{
-            card.discount
+            reward.rewardDescription
           }}</v-list-item-subtitle>
           <v-list-item-title style="font-size: medium; font-weight: bold" class="ml-2 mt-7"
             ><v-icon color="rgb(43, 102, 211)">{{ mdiAlphaPCircleOutline }}</v-icon
             ><span style="font-size: small; font-weight: lighter; color: #5004ec" class="ml-1"
-              >{{ card.points }} คะแนน</span
+              >{{ reward.rewardPaypoint }} คะแนน</span
             ></v-list-item-title
           ><v-list-item-subtitle style="font-size: x-small" class="ml-3"
-            >หมดอายุ {{ card.expiryDate }}
+            >หมดอายุ {{ rewardStore.toLocalDate(reward.rewardEndDate, 'short') }}
             <v-icon style="margin-left: 125px" size="20" color="#f4bd4c">{{
               mdiStar
             }}</v-icon></v-list-item-subtitle
@@ -201,7 +184,7 @@ const cards = [
       ><v-col align="end"><a href="https://example.com" class="clickable-text"> See All </a></v-col>
     </v-row>
     <v-row style="margin-top: -10px">
-      <v-col v-for="(card, index) in cards" :key="index" cols="auto">
+      <v-col v-for="reward in rewards" :key="reward.rewardId" cols="auto">
         <v-card
           style="background-color: white"
           rounded="xl"
@@ -209,7 +192,7 @@ const cards = [
           width="260"
           height="300"
         >
-          <v-img :src="card.image" cover height="200px">
+          <v-img :src="reward.rewardImg" cover height="200px">
             <v-card
               style="
                 background-color: #da4453;
@@ -225,15 +208,15 @@ const cards = [
             >
           </v-img>
           <v-list-item-subtitle style="font-size: 11px" class="ml-2 mt-2">{{
-            card.discount
+            reward.rewardDescription
           }}</v-list-item-subtitle>
           <v-list-item-title style="font-size: medium; font-weight: bold" class="ml-2 mt-7"
             ><v-icon color="rgb(43, 102, 211)">{{ mdiAlphaPCircleOutline }}</v-icon
             ><span style="font-size: small; font-weight: lighter; color: #5004ec" class="ml-1"
-              >{{ card.points }} คะแนน</span
+              >{{ reward.rewardPaypoint }} คะแนน</span
             ></v-list-item-title
           ><v-list-item-subtitle style="font-size: x-small" class="ml-3"
-            >หมดอายุ {{ card.expiryDate }}
+            >หมดอายุ {{ rewardStore.toLocalDate(reward.rewardEndDate, 'short') }}
             <v-icon style="margin-left: 125px" size="20" color="#f4bd4c">{{
               mdiStar
             }}</v-icon></v-list-item-subtitle

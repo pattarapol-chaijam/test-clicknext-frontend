@@ -14,12 +14,12 @@ const router = useRouter()
       style="
         background-color: #e4ecff;
         border-radius: 15px;
-        width: 90%;
+        width: 95%;
         height: 8%;
-        margin-left: 5%;
+        margin-left: 3%;
         margin-bottom: 1%;
       "
-      :elevation="1"
+      :elevation="0"
     >
       <v-btn
         :value="0"
