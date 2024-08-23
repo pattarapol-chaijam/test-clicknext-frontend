@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import router from '@/router'
 import type Reward from '@/types/reward'
-import { mdiKeyboardBackspace, mdiAlphaPCircleOutline } from '@mdi/js'
+import { mdiKeyboardBackspace, mdiAlphaPCircleOutline, mdiAlertCircle } from '@mdi/js'
 import { onMounted, ref } from 'vue'
 import { useRewardStore } from '@/stores/reward'
 import { useAuthStore } from '@/stores/auth'
@@ -11,6 +11,7 @@ const reward = ref<Reward>()
 const rewardStore = useRewardStore()
 const userStore = useUserStore()
 const authStore = useAuthStore()
+const confirmDialog = ref(false)
 const back = () => {
   router.push({ name: 'home' })
 }
@@ -62,7 +63,7 @@ onMounted(async () => {
           </v-card>
         </v-col>
         <v-col>
-          <v-card style="margin: auto; height: 85%; width: 102%; margin-top: -3px" rounded="0">
+          <v-card style="margin: auto; height: 100%; width: 100%" rounded="0">
             <v-img
               cover
               :src="reward?.rewardImg"
@@ -131,6 +132,7 @@ onMounted(async () => {
       </div></v-list-item-title
     >
     <v-btn
+      @click="confirmDialog = true"
       style="
         height: 50px;
         background-color: #5f1ced;
@@ -145,4 +147,34 @@ onMounted(async () => {
       แลกสิทธ์</v-btn
     >
   </v-container>
+
+  <v-dialog v-model="confirmDialog" persistent width="500">
+    <v-card rounded="xl">
+      <v-card-title style="background-color: #681cec; color: white">ยืนยันการแลก</v-card-title>
+      <v-divider></v-divider>
+      <v-card-item align="center">
+        <v-icon :icon="mdiAlertCircle" size="70" color="red"></v-icon>
+      </v-card-item>
+      <v-card-text align="center"
+        >คุณต้องการใช้คะแนนจำนวน <strong>{{ reward?.rewardPaypoint }}</strong> คะแนน
+        <p>
+          แลก <strong>{{ reward?.rewardName }}</strong> ใช่หรือไม่
+        </p>
+      </v-card-text>
+      <v-card-text align="center" class="mb-1">
+        <v-btn
+          text="ยืนยัน"
+          style="background-color: #80dcbc; color: white; width: 150px"
+          rounded="xl"
+        ></v-btn>
+        <span class="mx-2"></span>
+        <v-btn
+          text="ยกเลิก"
+          rounded="xl"
+          style="background-color: #f45c54; color: white; width: 150px"
+          @click="confirmDialog = false"
+        ></v-btn>
+      </v-card-text>
+    </v-card>
+  </v-dialog>
 </template>

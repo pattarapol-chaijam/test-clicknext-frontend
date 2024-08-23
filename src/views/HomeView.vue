@@ -11,7 +11,7 @@ const userStore = useUserStore()
 const rewardStore = useRewardStore()
 const rewards = ref<Reward[]>()
 const authStore = useAuthStore()
-
+const model = ref(null)
 const user = ref<User>()
 const rewardDetail = (rewardId: number) => {
   router.push({
@@ -154,45 +154,48 @@ onMounted(async () => {
           class="ml-2"
           >For you</v-list-item-title
         ></v-col
-      ><v-col align="end"><a href="" class="clickable-text"> See All </a></v-col>
+      ><v-col align="end"
+        ><a href="" class="clickable-text" style="font-size: small; color: rgb(43, 102, 211)">
+          See All
+        </a></v-col
+      >
     </v-row>
-    <v-row style="margin-top: -10px">
-      <v-col v-for="reward in rewards" :key="reward.rewardId" cols="auto">
-        <v-btn
-          style="background-color: white"
-          rounded="xl"
-          :elevation="0"
-          width="260"
-          height="300"
-          @click="rewardDetail(reward.rewardId)"
-        >
+
+    <v-sheet class="mx-auto" elevation="0" width="100%" style="background-color: #f4f4f4">
+      <v-slide-group v-model="model" show-arrows class="py-5">
+        <v-slide-group-item v-for="reward in rewards" :key="reward.rewardId">
           <v-card
             style="background-color: white"
+            class="ml-5"
             rounded="xl"
             :elevation="0"
             width="260"
             height="300"
             align="start"
+            @click="rewardDetail(reward.rewardId)"
           >
             <v-img :src="reward.rewardImg" cover height="200px"></v-img>
-            <v-list-item-subtitle style="font-size: 11px" class="ml-2 mt-2">{{
-              reward.rewardDescription
-            }}</v-list-item-subtitle>
-            <v-list-item-title style="font-size: medium; font-weight: bold" class="ml-2 mt-7"
-              ><v-icon color="rgb(43, 102, 211)">{{ mdiAlphaPCircleOutline }}</v-icon
-              ><span style="font-size: small; font-weight: lighter; color: #5004ec" class="ml-1"
-                >{{ reward.rewardPaypoint }} คะแนน</span
-              ></v-list-item-title
-            ><v-list-item-subtitle style="font-size: x-small" class="ml-3"
-              >หมดอายุ {{ rewardStore.toLocalDate(reward.rewardEndDate, 'short') }}
-              <v-icon style="margin-left: 125px" size="20" color="#f4bd4c">{{
-                mdiStar
-              }}</v-icon></v-list-item-subtitle
-            >
-          </v-card></v-btn
-        ></v-col
-      >
-    </v-row>
+            <v-list-item-subtitle style="font-size: 11px" class="ml-2 mt-2">
+              {{ reward.rewardDescription }}
+            </v-list-item-subtitle>
+            <v-list-item-title style="font-size: medium; font-weight: bold" class="ml-2 mt-7">
+              <v-icon color="rgb(43, 102, 211)">
+                {{ mdiAlphaPCircleOutline }}
+              </v-icon>
+              <span style="font-size: small; font-weight: lighter; color: #5004ec" class="ml-1">
+                {{ reward.rewardPaypoint }} คะแนน
+              </span>
+            </v-list-item-title>
+            <v-list-item-subtitle style="font-size: x-small" class="ml-3">
+              หมดอายุ {{ rewardStore.toLocalDate(reward.rewardEndDate, 'short') }}
+              <v-icon style="margin-left: 116px" size="20" color="#f4bd4c">
+                {{ mdiStar }}
+              </v-icon>
+            </v-list-item-subtitle>
+          </v-card>
+        </v-slide-group-item>
+      </v-slide-group>
+    </v-sheet>
   </v-container>
   <v-container fluid>
     <v-row>
@@ -202,59 +205,62 @@ onMounted(async () => {
           class="ml-2"
           >Hot Deals!</v-list-item-title
         ></v-col
-      ><v-col align="end"><a href="" class="clickable-text"> See All </a></v-col>
+      ><v-col align="end"
+        ><a href="" class="clickable-text" style="font-size: small; color: rgb(43, 102, 211)">
+          See All
+        </a></v-col
+      >
     </v-row>
-    <v-row style="margin-top: -10px">
-      <v-col v-for="reward in rewards" :key="reward.rewardId" cols="auto">
-        <v-btn
-          style="background-color: white"
-          rounded="xl"
-          :elevation="0"
-          width="260"
-          height="300"
-          @click="rewardDetail(reward.rewardId)"
-        >
+
+    <v-sheet class="mx-auto" elevation="0" width="100%" style="background-color: #f4f4f4">
+      <v-slide-group v-model="model" class="py-5" show-arrows>
+        <v-slide-group-item v-for="reward in rewards" :key="reward.rewardId">
           <v-card
             style="background-color: white"
+            class="ml-5"
             rounded="xl"
             :elevation="0"
             width="260"
             height="300"
             align="start"
+            @click="rewardDetail(reward.rewardId)"
           >
             <v-img :src="reward.rewardImg" cover height="200px">
               <v-card
                 style="
                   background-color: #da4453;
                   font-weight: bold;
-                  font-size: 10px;
+                  font-size: 12px;
                   color: white;
                   border: 1px solid white;
                 "
-                class="mt-2 pt-1"
+                class="mt-2 pt-1 pl-2"
                 width="80px"
-                height="25px"
+                height="30px"
                 >Hot Deals!</v-card
               >
             </v-img>
-            <v-list-item-subtitle style="font-size: 11px" class="ml-2 mt-2">{{
-              reward.rewardDescription
-            }}</v-list-item-subtitle>
-            <v-list-item-title style="font-size: medium; font-weight: bold" class="ml-2 mt-7"
-              ><v-icon color="rgb(43, 102, 211)">{{ mdiAlphaPCircleOutline }}</v-icon
-              ><span style="font-size: small; font-weight: lighter; color: #5004ec" class="ml-1"
-                >{{ reward.rewardPaypoint }} คะแนน</span
-              ></v-list-item-title
-            ><v-list-item-subtitle style="font-size: x-small" class="ml-3"
-              >หมดอายุ {{ rewardStore.toLocalDate(reward.rewardEndDate, 'short') }}
-              <v-icon style="margin-left: 125px" size="20" color="#f4bd4c">{{
-                mdiStar
-              }}</v-icon></v-list-item-subtitle
-            >
-          </v-card></v-btn
-        ></v-col
-      >
-    </v-row>
+            <v-list-item-subtitle style="font-size: 11px" class="ml-2 mt-2">
+              {{ reward.rewardDescription }}
+            </v-list-item-subtitle>
+            <v-list-item-title style="font-size: medium; font-weight: bold" class="ml-2 mt-7">
+              <v-icon color="rgb(43, 102, 211)">
+                {{ mdiAlphaPCircleOutline }}
+              </v-icon>
+              <span style="font-size: small; font-weight: lighter; color: #5004ec" class="ml-1">
+                {{ reward.rewardPaypoint }} คะแนน
+              </span>
+            </v-list-item-title>
+            <v-list-item-subtitle style="font-size: x-small" class="ml-3">
+              หมดอายุ {{ rewardStore.toLocalDate(reward.rewardEndDate, 'short') }}
+              <v-icon style="margin-left: 116px" size="20" color="#f4bd4c">
+                {{ mdiStar }}
+              </v-icon>
+            </v-list-item-subtitle>
+          </v-card>
+        </v-slide-group-item>
+      </v-slide-group>
+    </v-sheet>
   </v-container>
 </template>
 <style>
@@ -262,8 +268,6 @@ onMounted(async () => {
   display: flex;
 }
 .clickable-text {
-  font-size: small;
-  color: rgb(43, 102, 211);
   text-decoration: none;
 }
 </style>
