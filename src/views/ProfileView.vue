@@ -89,7 +89,7 @@ onMounted(async () => {
       </v-container>
     </v-img>
   </v-card>
-  <v-container fluid>
+  <v-container fluid class="mt-2">
     <v-card style="margin-top: -30px; height: 230px" rounded="xl" :elevation="0">
       <v-card-title>
         <a href="" class="clickable-text">

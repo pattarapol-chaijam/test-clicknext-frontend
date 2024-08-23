@@ -2,14 +2,15 @@
 import { mdiHomeOutline, mdiStarOutline, mdiAccountOutline } from '@mdi/js'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-const value = ref(0)
+const active = ref('home')
 const router = useRouter()
 </script>
 <template>
   <v-container class="mt-5">
     <v-bottom-navigation
       grow
-      v-model="value"
+      v-model="active"
+      class="custom-bottom-navigation"
       color="teal"
       style="
         background-color: #e4ecff;
@@ -22,76 +23,67 @@ const router = useRouter()
       :elevation="0"
     >
       <v-btn
-        :value="0"
-        :style="
-          value === 0
-            ? 'background-color: #4b21ef; color: white; border-radius: 50px; height:60px ; max-width: 120px; margin-top:10px '
-            : 'color: #4b21ef'
-        "
-        @click="router.push('/'), (value = 0)"
-        class="d-flex flex-column align-center justify-center"
+        :to="{ name: 'home' }"
+        value="home"
+        :class="{ 'active-button': active === 'home' }"
+        rounded
+        class="custom-button"
       >
-        <v-icon size="24px" :color="value === 0 ? 'lightgreen' : ''" class="mb-1">
+        <v-icon :color="active === 'home' ? '#14cb80' : ''" size="30">
           {{ mdiHomeOutline }}
         </v-icon>
-        <span
-          :style="
-            value === 0
-              ? 'font-size: small; font-weight: 900; color: white;'
-              : 'font-size: small; font-weight: 900;'
-          "
-        >
-          หน้าหลัก
-        </span>
+        <span> หน้าหลัก </span>
       </v-btn>
 
       <v-btn
-        :value="1"
-        :style="
-          value === 1
-            ? 'background-color: #4b21ef; color: white; border-radius: 50px; height:60px ; max-width: 120px; margin-top:10px '
-            : 'color: #4b21ef'
-        "
-        @click="router.push('/reward'), (value = 1)"
-        class="d-flex flex-column align-center justify-center"
+        value="reward"
+        :to="{ name: 'reward' }"
+        :class="{ 'active-button': active === 'reward' }"
+        rounded
+        class="custom-button"
       >
-        <v-icon size="24px" :color="value === 1 ? 'lightgreen' : ''" class="mb-1">
+        <v-icon :color="active === 'reward' ? '#14cb80' : ''" size="30">
           {{ mdiStarOutline }}
         </v-icon>
-        <span
-          :style="
-            value === 1
-              ? 'font-size: small; font-weight: 900; color: white;'
-              : 'font-size: small; font-weight: 900;'
-          "
-        >
-          สะสมพอยท์
-        </span>
+        <span> สะสมพอยท์ </span>
       </v-btn>
 
       <v-btn
-        :value="2"
-        :style="
-          value === 2
-            ? 'background-color: #4b21ef; color: white; border-radius: 50px; height:60px ;max-width: 120px; margin-top:10px '
-            : 'color: #4b21ef'
-        "
-        @click="router.push('/profile'), (value = 2)"
-        class="d-flex flex-column align-center justify-center"
+        value="profile"
+        :to="{ name: 'profile' }"
+        :class="{ 'active-button': active === 'profile' }"
+        rounded
+        class="custom-button"
       >
-        <v-icon size="24px" :color="value === 2 ? 'lightgreen' : ''" class="mb-1">
-          {{ mdiAccountOutline }}
-        </v-icon>
-        <span
-          :style="
-            value === 2
-              ? 'font-size: small; font-weight: 900; color: white;'
-              : 'font-size: small; font-weight: 900;'
-          "
-        >
-          บัญชี
-        </span>
+        <v-icon :color="active === 'profile' ? '#14cb80' : ''" size="30">{{
+          mdiAccountOutline
+        }}</v-icon>
+        <span>บัญชี</span>
       </v-btn>
     </v-bottom-navigation>
   </v-container>
 </template>
+<style scoped>
+.custom-bottom-navigation {
+  padding: 5px;
+}
+
+.custom-button {
+  border-radius: 50px !important;
+  margin: 0 10px;
+  width: 50px;
+  height: 50px;
+  padding: 10px;
+  color: #4b21ef;
+}
+
+.active-button {
+  background-color: #4b21ef !important;
+  color: white !important;
+  border-radius: 50px !important;
+}
+
+.active-button span {
+  color: white !important;
+}
+</style>
