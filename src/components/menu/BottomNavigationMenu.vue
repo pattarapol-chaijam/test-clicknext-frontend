@@ -14,7 +14,7 @@ const router = useRouter()
       style="
         background-color: #e4ecff;
         border-radius: 15px;
-        width: 95%;
+        width: 94%;
         height: 8%;
         margin-left: 3%;
         margin-bottom: 1%;

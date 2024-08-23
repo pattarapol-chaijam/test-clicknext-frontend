@@ -22,6 +22,7 @@ export const useRewardStore = defineStore('Reward', () => {
       console.log(err)
     }
   }
+  1
 
   function toLocalDate(date: any, type: any) {
     if (date != undefined) {

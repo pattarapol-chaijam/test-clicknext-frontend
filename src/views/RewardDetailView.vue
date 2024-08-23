@@ -108,7 +108,7 @@ onMounted(async () => {
       >รายละเอียด</v-list-item-title
     >
     <v-list-item-title class="ml-5 mt-2" style="font-size: small; color: gray"
-      >ใช้ {{ reward?.rewardPaypoint }} {{ reward?.rewardName }}</v-list-item-title
+      >ใช้ {{ reward?.rewardPaypoint }} คะแนนแลก{{ reward?.rewardName }}</v-list-item-title
     >
     <v-list-item-title class="ml-5 mt-2" style="font-size: large; font-weight: bold"
       >เงื่อนไข</v-list-item-title

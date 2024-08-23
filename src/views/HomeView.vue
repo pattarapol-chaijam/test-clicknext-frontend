@@ -153,7 +153,7 @@ onMounted(async () => {
           class="ml-2"
           >For you</v-list-item-title
         ></v-col
-      ><v-col align="end"><a href="https://example.com" class="clickable-text"> See All </a></v-col>
+      ><v-col align="end"><a href="" class="clickable-text"> See All </a></v-col>
     </v-row>
     <v-row style="margin-top: -10px">
       <v-col v-for="reward in rewards" :key="reward.rewardId" cols="auto">
@@ -201,7 +201,7 @@ onMounted(async () => {
           class="ml-2"
           >Hot Deals!</v-list-item-title
         ></v-col
-      ><v-col align="end"><a href="https://example.com" class="clickable-text"> See All </a></v-col>
+      ><v-col align="end"><a href="" class="clickable-text"> See All </a></v-col>
     </v-row>
     <v-row style="margin-top: -10px">
       <v-col v-for="reward in rewards" :key="reward.rewardId" cols="auto">
