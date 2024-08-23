@@ -1,5 +1,14 @@
 <script setup lang="ts">
 import { mdiTicketConfirmation, mdiLineScan } from '@mdi/js'
+import { useAuthStore } from '@/stores/auth'
+import router from '@/router'
+
+const authStore = useAuthStore()
+
+const logout = () => {
+  authStore.signOut()
+  router.push({ name: 'signIn' })
+}
 </script>
 
 <template>
@@ -104,7 +113,9 @@ import { mdiTicketConfirmation, mdiLineScan } from '@mdi/js'
               height="35"
               class="mb-1"
             ></v-img></span
-          ><span class="pl-2" style="font-size: medium; font-weight: bold">ออกจากระบบ</span></v-row
+          ><span class="pl-2" style="font-size: medium; font-weight: bold" @click="logout"
+            >ออกจากระบบ</span
+          ></v-row
         ><v-divider class="mt-5"></v-divider>
       </v-card-title> </v-card
   ></v-container>
