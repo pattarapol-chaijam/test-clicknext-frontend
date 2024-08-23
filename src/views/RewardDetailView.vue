@@ -4,15 +4,22 @@ import type Reward from '@/types/reward'
 import { mdiKeyboardBackspace, mdiAlphaPCircleOutline } from '@mdi/js'
 import { onMounted, ref } from 'vue'
 import { useRewardStore } from '@/stores/reward'
+import { useAuthStore } from '@/stores/auth'
+import { useUserStore } from '@/stores/user'
+import type User from '@/types/user'
 const reward = ref<Reward>()
 const rewardStore = useRewardStore()
+const userStore = useUserStore()
+const authStore = useAuthStore()
 const back = () => {
   router.push({ name: 'home' })
 }
+const user = ref<User>()
 const rewardId = router.currentRoute.value.params.rewardId.toString()
 onMounted(async () => {
+  user.value = await authStore.getCurrentUser()
+  await userStore.getUser(user.value!.userId)
   reward.value = await rewardStore.getReward(+rewardId)
-  console.log(reward.value)
 })
 </script>
 
@@ -26,7 +33,7 @@ onMounted(async () => {
     >
     <v-spacer></v-spacer>
     <v-list-item-title style="font-size: 20px; font-weight: bold" class="mt-2"
-      >1234
+      >{{ user?.userPoint }}
       <span class="mr-2" style="font-size: 15px; font-weight: lighter">
         คะแนน</span
       ></v-list-item-title
@@ -35,6 +42,7 @@ onMounted(async () => {
 
   <v-card
     max-height="350"
+    class="mt-2"
     :elevation="0"
     :style="{ background: 'linear-gradient(to bottom, #72dbb9, #c5e3fc)', color: '#fff' }"
   >

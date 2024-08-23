@@ -1,14 +1,22 @@
 <script setup lang="ts">
 import { mdiTicketConfirmation, mdiLineScan } from '@mdi/js'
 import { useAuthStore } from '@/stores/auth'
+import { useUserStore } from '@/stores/user'
 import router from '@/router'
-
+import { onMounted, ref } from 'vue'
+import type User from '@/types/user'
+const userStore = useUserStore()
 const authStore = useAuthStore()
-
+const user = ref<User>()
 const logout = () => {
   authStore.signOut()
   router.push({ name: 'signIn' })
 }
+
+onMounted(async () => {
+  user.value = await authStore.getCurrentUser()
+  await userStore.getUser(user.value!.userId)
+})
 </script>
 
 <template>
@@ -32,10 +40,12 @@ const logout = () => {
               ></v-img>
             </v-avatar>
             <v-card-item class="mt-15" style="font-size: 24px; width: 100%; text-align: center"
-              >สวัสดี คุณ
-              <v-card-subtitle style="font-size: large; text-align: center">001</v-card-subtitle>
+              >สวัสดี คุณ{{ user?.userName }}
+              <v-card-subtitle style="font-size: large; text-align: center"
+                >00000{{ user?.userId }}</v-card-subtitle
+              >
               <v-card-title style="text-align: center"
-                ><a href="" class="clickable-text"> ดูโปรไฟล์ของฉัน ></a>
+                ><a href="" class="profile"> ดูโปรไฟล์ของฉัน ></a>
               </v-card-title>
               <v-card
                 height="85"
@@ -49,7 +59,7 @@ const logout = () => {
                 <v-row>
                   <v-col style="margin-top: -10px">
                     <v-card-text style="color: black; font-size: 23px; font-weight: bold">
-                      20000
+                      {{ user?.userPoint }}
                       <span style="color: black; font-size: 17px; font-weight: lighter">คะแนน</span>
                     </v-card-text>
                     <v-card-subtitle style="color: black"
@@ -61,13 +71,17 @@ const logout = () => {
             </v-card-item>
             <v-row class="mt-2" style="text-align: center"
               ><v-col>
-                <v-icon class="mr-2" size="30">{{ mdiTicketConfirmation }}</v-icon
-                >My Reward</v-col
+                <a href="" class="clickable-text">
+                  <v-icon class="mr-2" size="30">{{ mdiTicketConfirmation }}</v-icon
+                  >My Reward</a
+                ></v-col
               >
               <v-divider class="ms-3" vertical></v-divider>
               <v-col>
-                <v-icon class="mr-2" size="30">{{ mdiLineScan }}</v-icon
-                >Earn Point</v-col
+                <a href="" class="clickable-text">
+                  <v-icon class="mr-2" size="30">{{ mdiLineScan }}</v-icon
+                  >Earn Point</a
+                ></v-col
               ></v-row
             >
           </v-row>
@@ -78,44 +92,50 @@ const logout = () => {
   <v-container fluid>
     <v-card style="margin-top: -30px; height: 230px" rounded="xl" :elevation="0">
       <v-card-title>
-        <v-row class="mt-4 ml-3" align="center">
-          <span
-            ><v-img
-              src="https://demo-point-insurance.clicknext.com/images/history.svg"
-              width="35"
-              height="35"
-              class="mb-1"
-            ></v-img></span
-          ><span class="pl-2" style="font-size: medium; font-weight: bold"
-            >ประวัติการสะสมคะแนน</span
-          ></v-row
+        <a href="" class="clickable-text">
+          <v-row class="mt-4 ml-3" align="center">
+            <span
+              ><v-img
+                src="https://demo-point-insurance.clicknext.com/images/history.svg"
+                width="35"
+                height="35"
+                class="mb-1"
+              ></v-img></span
+            ><span class="pl-2" style="font-size: medium; font-weight: bold"
+              >ประวัติการสะสมคะแนน</span
+            ></v-row
+          ></a
         >
         <v-divider class="mt-5"></v-divider>
-        <v-row class="mt-4 ml-3" align="center">
-          <span
-            ><v-img
-              src="https://demo-point-insurance.clicknext.com/images/privacy.svg"
-              width="35"
-              height="35"
-              class="mb-1"
-            ></v-img></span
-          ><span class="pl-2" style="font-size: medium; font-weight: bold"
-            >นโยบายความส่วนตัว</span
-          ></v-row
+        <a href="" class="clickable-text">
+          <v-row class="mt-4 ml-3" align="center">
+            <span
+              ><v-img
+                src="https://demo-point-insurance.clicknext.com/images/privacy.svg"
+                width="35"
+                height="35"
+                class="mb-1"
+              ></v-img></span
+            ><span class="pl-2" style="font-size: medium; font-weight: bold"
+              >นโยบายความส่วนตัว</span
+            ></v-row
+          ></a
         >
 
         <v-divider class="mt-5"></v-divider>
-        <v-row class="mt-4 ml-3" align="center">
-          <span
-            ><v-img
-              src="https://demo-point-insurance.clicknext.com/images/logout.svg"
-              width="35"
-              height="35"
-              class="mb-1"
-            ></v-img></span
-          ><span class="pl-2" style="font-size: medium; font-weight: bold" @click="logout"
-            >ออกจากระบบ</span
-          ></v-row
+        <a href="" class="clickable-text" @click="logout">
+          <v-row class="mt-4 ml-3" align="center">
+            <span
+              ><v-img
+                src="https://demo-point-insurance.clicknext.com/images/logout.svg"
+                width="35"
+                height="35"
+                class="mb-1"
+              ></v-img></span
+            ><span class="pl-2" style="font-size: medium; font-weight: bold"
+              >ออกจากระบบ</span
+            ></v-row
+          > </a
         ><v-divider class="mt-5"></v-divider>
       </v-card-title> </v-card
   ></v-container>
@@ -124,39 +144,44 @@ const logout = () => {
     <v-card style="margin-top: -10px; height: 80px" rounded="xl" :elevation="0">
       <v-card-title>
         <v-row class="mt-1 ml-3">
-          <v-col
-            ><v-img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Facebook_Logo_%282019%29.png/800px-Facebook_Logo_%282019%29.png"
-              width="35"
-              height="35"
-            ></v-img
+          <v-col>
+            <a href="" class="clickable-text">
+              <v-img
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Facebook_Logo_%282019%29.png/800px-Facebook_Logo_%282019%29.png"
+                width="35"
+                height="35"
+              ></v-img></a
           ></v-col>
-          <v-col
-            ><v-img
-              src="https://static.vecteezy.com/system/resources/thumbnails/027/395/710/small/twitter-brand-new-logo-3-d-with-new-x-shaped-graphic-of-the-world-s-most-popular-social-media-free-png.png"
-              width="35"
-              height="35"
-            ></v-img
+          <v-col>
+            <a href="" class="clickable-text">
+              <v-img
+                src="https://static.vecteezy.com/system/resources/thumbnails/027/395/710/small/twitter-brand-new-logo-3-d-with-new-x-shaped-graphic-of-the-world-s-most-popular-social-media-free-png.png"
+                width="35"
+                height="35"
+              ></v-img></a
           ></v-col>
-          <v-col align="center"
-            ><v-img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4vtphMtxRWfK6nO2CIbGfSETyEs79Dr6oPw&s"
-              width="35"
-              height="35"
-            ></v-img
+          <v-col align="center">
+            <a href="" class="clickable-text"
+              ><v-img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4vtphMtxRWfK6nO2CIbGfSETyEs79Dr6oPw&s"
+                width="35"
+                height="35"
+              ></v-img></a
           ></v-col>
-          <v-col align="right"
-            ><v-img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/640px-Instagram_logo_2022.svg.png"
-              width="35"
-              height="35"
-            ></v-img
+          <v-col align="right">
+            <a href="" class="clickable-text"
+              ><v-img
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/640px-Instagram_logo_2022.svg.png"
+                width="35"
+                height="35"
+              ></v-img></a
           ></v-col>
-          <v-col align="right"
-            ><v-img
-              src="https://upload.wikimedia.org/wikipedia/commons/4/41/LINE_logo.svg"
-              width="35"
-            ></v-img
+          <v-col align="right">
+            <a href="" class="clickable-text"
+              ><v-img
+                src="https://upload.wikimedia.org/wikipedia/commons/4/41/LINE_logo.svg"
+                width="35"
+              ></v-img></a
           ></v-col>
         </v-row>
       </v-card-title> </v-card
@@ -166,9 +191,14 @@ const logout = () => {
 .subtitle-text {
   display: flex;
 }
-.clickable-text {
+.profile {
   font-size: large;
   color: rgb(43, 102, 211);
+  text-decoration: none;
+}
+.clickable-text {
+  font-size: large;
+  color: rgb(0, 0, 0);
   text-decoration: none;
 }
 </style>

@@ -6,13 +6,13 @@ import { onMounted, ref } from 'vue'
 import type User from '@/types/user'
 import type Reward from '@/types/reward'
 import router from '@/router'
-
+import { useAuthStore } from '@/stores/auth'
 const userStore = useUserStore()
 const rewardStore = useRewardStore()
-const users = ref<User>()
 const rewards = ref<Reward[]>()
-const userId = ref(2)
+const authStore = useAuthStore()
 
+const user = ref<User>()
 const rewardDetail = (rewardId: number) => {
   router.push({
     name: 'reward_detail',
@@ -21,7 +21,8 @@ const rewardDetail = (rewardId: number) => {
 }
 
 onMounted(async () => {
-  users.value = await userStore.getUser(userId.value)
+  user.value = await authStore.getCurrentUser()
+  await userStore.getUser(user.value!.userId)
   rewards.value = await rewardStore.getRewards()
 })
 </script>
@@ -40,7 +41,7 @@ onMounted(async () => {
           ></v-avatar>
           <v-col
             ><div class="mt-8 ml-2" style="color: white; font-size: small">ยินดีต้อนรับ</div>
-            <div class="ml-2" style="color: white">{{ users?.userName }}</div></v-col
+            <div class="ml-2" style="color: white">{{ user?.userName }}</div></v-col
           >
         </v-row>
       </v-container>
@@ -56,7 +57,7 @@ onMounted(async () => {
           ></v-img
         ></v-col>
         <v-col align="end" class="pr-7 pt-9">
-          <span style="font-size: 22px; font-weight: bold">{{ users?.userPoint }} </span
+          <span style="font-size: 22px; font-weight: bold">{{ user?.userPoint }} </span
           ><span> คะแนน</span>
         </v-col>
       </v-row>

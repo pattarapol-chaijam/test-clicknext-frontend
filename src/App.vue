@@ -3,6 +3,11 @@ import MainHeader from './components/header/MainHeader.vue'
 import { RouterView } from 'vue-router'
 import BottomNavigationMenu from './components/menu/BottomNavigationMenu.vue'
 import MessageDialog from './components/Dialog/MessageDialog.vue'
+import { computed } from 'vue'
+import router from './router'
+const isLogin = computed(() => {
+  return !!localStorage.getItem('access_token')
+})
 </script>
 
 <template>
@@ -10,7 +15,7 @@ import MessageDialog from './components/Dialog/MessageDialog.vue'
     <v-main>
       <RouterView />
     </v-main>
-    <BottomNavigationMenu />
+    <BottomNavigationMenu v-if="router.currentRoute.value.meta.menu" />
     <MessageDialog />
   </v-app>
 </template>

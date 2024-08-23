@@ -25,7 +25,9 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       const response = await authService.signIn(userUsername, userPassword)
       localStorage.setItem('access_token', response.data.access_token)
-      router.push('/')
+      router.push('/').then(() => {
+        window.location.reload()
+      })
     } catch (err) {
       messageStore.showError('Username หรือ Password ไม่ถูกต้อง')
     }
@@ -33,7 +35,9 @@ export const useAuthStore = defineStore('auth', () => {
 
   const signOut = () => {
     localStorage.removeItem('access_token')
-    router.push('/signIn')
+    router.push('/signIn').then(() => {
+      window.location.reload()
+    })
   }
 
   return {
