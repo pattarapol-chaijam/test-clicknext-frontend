@@ -13,6 +13,11 @@ const router = createRouter({
       component: () => import('../views/RewardView.vue')
     },
     {
+      path: '/reward_detail/:rewardId',
+      name: 'reward_detail',
+      component: () => import('../views/RewardDetailView.vue')
+    },
+    {
       path: '/profile',
       name: 'profile',
       component: () => import('../views/ProfileView.vue')

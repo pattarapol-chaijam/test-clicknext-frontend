@@ -1,5 +1,5 @@
 import axios from './axios'
-const getuser = (userId: number) => {
+const getUser = (userId: number) => {
   return axios.get(`users/${userId}`)
 }
-export default { getuser }
+export default { getUser }

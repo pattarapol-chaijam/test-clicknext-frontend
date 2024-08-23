@@ -1,5 +1,8 @@
 import axios from './axios'
-const getrewards = () => {
+const getRewards = () => {
   return axios.get(`rewards`)
 }
-export default { getrewards }
+const getReward = (rewardId: number) => {
+  return axios.get(`rewards/${rewardId}`)
+}
+export default { getRewards, getReward }

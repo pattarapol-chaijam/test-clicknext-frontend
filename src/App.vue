@@ -9,7 +9,7 @@ import BottomNavigationMenu from './components/menu/BottomNavigationMenu.vue'
     <v-main>
       <RouterView />
     </v-main>
-    <BottomNavigationMenu />
+    <!-- <BottomNavigationMenu /> -->
   </v-app>
 </template>
 
