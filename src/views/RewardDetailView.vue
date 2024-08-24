@@ -2,25 +2,77 @@
 import router from '@/router'
 import type Reward from '@/types/reward'
 import { mdiKeyboardBackspace, mdiAlphaPCircleOutline, mdiAlertCircle } from '@mdi/js'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useRewardStore } from '@/stores/reward'
+import { useHistoryRewardStore } from '@/stores/history_reward'
 import { useAuthStore } from '@/stores/auth'
 import { useUserStore } from '@/stores/user'
 import type User from '@/types/user'
+import type HistoryReward from '@/types/history_reward'
+import historyRewardService from '@/services/history_reward'
 const reward = ref<Reward>()
 const rewardStore = useRewardStore()
 const userStore = useUserStore()
+const historyRewardStore = useHistoryRewardStore()
 const authStore = useAuthStore()
 const confirmDialog = ref(false)
+
+const currentUser = ref<User>()
 const back = () => {
   router.push({ name: 'home' })
 }
+const history = () => {
+  router.push({ name: 'reward' })
+}
 const user = ref<User>()
+const historyReward = ref<HistoryReward[]>([])
 const rewardId = router.currentRoute.value.params.rewardId.toString()
+
 onMounted(async () => {
-  user.value = await authStore.getCurrentUser()
-  await userStore.getUser(user.value!.userId)
+  currentUser.value = await authStore.getCurrentUser()
+  user.value = await userStore.getUser(currentUser.value!.userId)
   reward.value = await rewardStore.getReward(+rewardId)
+  historyReward.value = await historyRewardStore.getHistory(currentUser.value!.userId, +rewardId)
+  console.log(historyReward.value)
+})
+
+const saveHistoryRewards = async () => {
+  await historyRewardService.saveHistoryRewards({
+    rewardsId: +rewardId,
+    usersId: currentUser.value?.userId
+  })
+}
+
+const redeemReward = async () => {
+  user.value!.userPoint -= reward.value!.rewardPaypoint
+  reward.value!.rewardAmount -= 1
+  await userStore.update(user.value!)
+  await rewardStore.update(reward.value!)
+  await saveHistoryRewards()
+  confirmDialog.value = false
+  history()
+}
+
+const isRedeem = computed(() => {
+  let isDisabled = false
+  historyReward.value.forEach((item) => {
+    if (item.usersId === user.value?.userId && item.rewardsId === reward.value?.rewardId) {
+      isDisabled = true
+    }
+  })
+  return isDisabled
+})
+
+const isRedeemDisabled = computed(() => {
+  return (
+    user.value !== undefined &&
+    reward.value !== undefined &&
+    user.value.userPoint < reward.value.rewardPaypoint
+  )
+})
+
+const isRewardRedeemed = computed(() => {
+  return reward.value !== undefined && reward.value.rewardAmount <= 0
 })
 </script>
 
@@ -63,7 +115,7 @@ onMounted(async () => {
           </v-card>
         </v-col>
         <v-col>
-          <v-card style="margin: auto; height: 100%; width: 100%" rounded="0">
+          <v-card style="margin: auto; margin-top: -2px; height: 100%; width: 100%" rounded="0">
             <v-img
               cover
               :src="reward?.rewardImg"
@@ -98,7 +150,7 @@ onMounted(async () => {
           ></v-col
         ><v-col style="color: gray" class="mt-3">
           ระยะเวลา
-          <div style="font-size: 16px; color: #5f1ced">
+          <div style="font-size: 12px; color: #5f1ced">
             {{ rewardStore.toLocalDate(reward?.rewardStartDate, 'long') }} -
             {{ rewardStore.toLocalDate(reward?.rewardEndDate, 'long') }}
           </div></v-col
@@ -133,6 +185,7 @@ onMounted(async () => {
     >
     <v-btn
       @click="confirmDialog = true"
+      :disabled="isRedeem || isRedeemDisabled || isRewardRedeemed"
       style="
         height: 50px;
         background-color: #5f1ced;
@@ -153,7 +206,10 @@ onMounted(async () => {
       <v-card-title style="background-color: #681cec; color: white">ยืนยันการแลก</v-card-title>
       <v-divider></v-divider>
       <v-card-item align="center">
-        <v-icon :icon="mdiAlertCircle" size="70" color="red"></v-icon>
+        <v-img
+          src="https://media.discordapp.net/attachments/1093907115531321444/1276665290066755668/Animation_-_1724451070546.gif?ex=66ca5ab4&is=66c90934&hm=eaa54cdaa26a01af0477b0a52fb21b144799d6b31d800f9ca85a5ef7cbcc5e1a&="
+          width="100"
+        ></v-img>
       </v-card-item>
       <v-card-text align="center"
         >คุณต้องการใช้คะแนนจำนวน <strong>{{ reward?.rewardPaypoint }}</strong> คะแนน
@@ -166,6 +222,7 @@ onMounted(async () => {
           text="ยืนยัน"
           style="background-color: #80dcbc; color: white; width: 150px"
           rounded="xl"
+          @click="redeemReward()"
         ></v-btn>
         <span class="mx-2"></span>
         <v-btn

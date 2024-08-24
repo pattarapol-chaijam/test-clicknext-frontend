@@ -8,14 +8,15 @@ import type User from '@/types/user'
 const userStore = useUserStore()
 const authStore = useAuthStore()
 const user = ref<User>()
+const currentUser = ref<User>()
 const logout = () => {
   authStore.signOut()
   router.push({ name: 'signIn' })
 }
 
 onMounted(async () => {
-  user.value = await authStore.getCurrentUser()
-  await userStore.getUser(user.value!.userId)
+  currentUser.value = await authStore.getCurrentUser()
+  user.value = await userStore.getUser(currentUser.value!.userId)
 })
 </script>
 
@@ -49,8 +50,8 @@ onMounted(async () => {
               </v-card-title>
               <v-card
                 height="85"
-                width="97%"
-                class="ml-6 mt-2"
+                width="100%"
+                class="mt-2"
                 rounded="lg"
                 style="border: 2px solid #ebf0fe"
                 :elevation="0"

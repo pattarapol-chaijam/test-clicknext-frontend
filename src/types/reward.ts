@@ -5,7 +5,7 @@ export default interface Reward {
 
   rewardDescription: string
 
-  rewardPaypoint: string
+  rewardPaypoint: number
 
   rewardStartDate: Date
 

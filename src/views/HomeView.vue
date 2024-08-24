@@ -13,6 +13,7 @@ const rewards = ref<Reward[]>()
 const authStore = useAuthStore()
 const model = ref(null)
 const user = ref<User>()
+const currentUser = ref<User>()
 const rewardDetail = (rewardId: number) => {
   router.push({
     name: 'reward_detail',
@@ -21,8 +22,8 @@ const rewardDetail = (rewardId: number) => {
 }
 
 onMounted(async () => {
-  user.value = await authStore.getCurrentUser()
-  await userStore.getUser(user.value!.userId)
+  currentUser.value = await authStore.getCurrentUser()
+  user.value = await userStore.getUser(currentUser.value!.userId)
   rewards.value = await rewardStore.getRewards()
 })
 </script>

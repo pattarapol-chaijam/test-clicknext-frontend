@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 import { format, parseISO, addYears } from 'date-fns'
 import { th } from 'date-fns/locale'
 import rewardService from '@/services/reward'
+import type Reward from '@/types/reward'
 
 export const useRewardStore = defineStore('Reward', () => {
   async function getRewards() {
@@ -22,7 +23,15 @@ export const useRewardStore = defineStore('Reward', () => {
       console.log(err)
     }
   }
-  1
+
+  async function update(reward: Reward) {
+    try {
+      const res = await rewardService.update(reward)
+      return res.data
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   function toLocalDate(date: any, type: any) {
     if (date != undefined) {
@@ -38,5 +47,5 @@ export const useRewardStore = defineStore('Reward', () => {
       return null
     }
   }
-  return { getRewards, toLocalDate, getReward }
+  return { getRewards, toLocalDate, getReward, update }
 })

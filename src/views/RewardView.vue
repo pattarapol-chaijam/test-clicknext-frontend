@@ -1,5 +1,26 @@
 <script setup lang="ts">
 import { mdiAlphaPCircleOutline, mdiStar } from '@mdi/js'
+import { useHistoryRewardStore } from '@/stores/history_reward'
+import { onMounted, ref } from 'vue'
+import type User from '@/types/user'
+import type HistoryReward from '@/types/history_reward'
+import { useAuthStore } from '@/stores/auth'
+import { useUserStore } from '@/stores/user'
+import { useRewardStore } from '@/stores/reward'
+const userStore = useUserStore()
+const historyRewardStore = useHistoryRewardStore()
+const authStore = useAuthStore()
+const model = ref(0)
+const user = ref<User>()
+const historyRewards = ref<HistoryReward[]>([])
+const currentUser = ref<User>()
+
+const rewardStore = useRewardStore()
+onMounted(async () => {
+  currentUser.value = await authStore.getCurrentUser()
+  user.value = await userStore.getUser(currentUser.value!.userId)
+  historyRewards.value = await historyRewardStore.getHistoryReward(currentUser.value!.userId)
+})
 </script>
 
 <template>
@@ -60,7 +81,7 @@ import { mdiAlphaPCircleOutline, mdiStar } from '@mdi/js'
       >
       <v-col cols="4" align="center">
         <v-card
-          style="background-color: white; height: 140px; width: 99%"
+          style="background-color: white; height: 140px; width: 100%"
           rounded="xl"
           :elevation="0"
         >
@@ -70,10 +91,10 @@ import { mdiAlphaPCircleOutline, mdiStar } from '@mdi/js'
             height="55"
             src="https://www.svgrepo.com/show/530249/savings.svg "
           ></v-img>
-          <v-list-item-title style="font-size: small">รับคะแนนเพิ่ม</v-list-item-title>
-          <v-list-item-title style="font-size: medium; font-weight: bold"
-            >กด 1 ครั้ง รับ 1 คะแนน</v-list-item-title
-          >
+          <v-list-item-title style="font-size: medium">รับคะแนนเพิ่ม</v-list-item-title>
+          <v-list-item-title style="font-size: small; font-weight: bold"
+            >ทุกๆ 100฿ รับ 10 คะแนน
+          </v-list-item-title>
         </v-card></v-col
       >
     </v-row>
@@ -84,53 +105,51 @@ import { mdiAlphaPCircleOutline, mdiStar } from '@mdi/js'
         ><v-list-item-title
           style="font-size: 20px; font-weight: bold; margin-top: -10px"
           class="ml-2"
-          >ประวัติการแลก</v-list-item-title
+          >Hot Deals!</v-list-item-title
         ></v-col
+      ><v-col align="end"
+        ><a href="" class="clickable-text" style="font-size: small; color: rgb(43, 102, 211)">
+          See All
+        </a></v-col
       >
     </v-row>
-    <v-row style="margin-top: -10px">
-      <v-col cols="auto">
-        <v-card
-          style="background-color: white"
-          rounded="xl"
-          :elevation="0"
-          width="260"
-          height="300"
-          align="start"
-        >
-          <v-img
-            src="https://demo-point-insurance.clicknext.com/images/zizler-1.png"
-            cover
-            height="200px"
+
+    <v-sheet class="mx-auto" elevation="0" width="100%" style="background-color: #f4f4f4">
+      <v-slide-group v-model="model" class="py-5" show-arrows>
+        <v-slide-group-item>
+          <v-card
+            style="background-color: white"
+            class="ml-5"
+            rounded="xl"
+            :elevation="0"
+            width="260"
+            height="300"
+            align="start"
           >
-            <v-card
-              style="
-                background-color: #da4453;
-                font-weight: bold;
-                font-size: 10px;
-                color: white;
-                border: 1px solid white;
-              "
-              class="mt-2 pt-1"
-              width="80px"
-              height="25px"
-              >Hot Deals!</v-card
+            <v-img
+              src="https://demo-point-insurance.clicknext.com/images/donut.png"
+              cover
+              height="200px"
             >
-          </v-img>
-          <v-list-item-subtitle style="font-size: 11px" class="ml-2 mt-2">หฟก</v-list-item-subtitle>
-          <v-list-item-title style="font-size: medium; font-weight: bold" class="ml-2 mt-7"
-            ><v-icon color="rgb(43, 102, 211)">{{ mdiAlphaPCircleOutline }}</v-icon
-            ><span style="font-size: small; font-weight: lighter; color: #5004ec" class="ml-1">
-              คะแนน</span
-            ></v-list-item-title
-          ><v-list-item-subtitle style="font-size: x-small" class="ml-3"
-            >หมดอายุ
-            <v-icon style="margin-left: 125px" size="20" color="#f4bd4c">{{
-              mdiStar
-            }}</v-icon></v-list-item-subtitle
-          >
-        </v-card></v-col
-      >
-    </v-row>
+            </v-img>
+            <v-list-item-subtitle style="font-size: 11px" class="ml-2 mt-2"> </v-list-item-subtitle>
+            <v-list-item-title style="font-size: medium; font-weight: bold" class="ml-2 mt-7">
+              <v-icon color="rgb(43, 102, 211)">
+                {{ mdiAlphaPCircleOutline }}
+              </v-icon>
+              <span style="font-size: small; font-weight: lighter; color: #5004ec" class="ml-1">
+                200 คะแนน
+              </span>
+            </v-list-item-title>
+            <v-list-item-subtitle style="font-size: x-small" class="ml-3">
+              วันที่แลก 19 ต.ค. 2567
+              <v-icon style="margin-left: 116px" size="20" color="#f4bd4c">
+                {{ mdiStar }}
+              </v-icon>
+            </v-list-item-subtitle>
+          </v-card>
+        </v-slide-group-item>
+      </v-slide-group>
+    </v-sheet>
   </v-container>
 </template>
