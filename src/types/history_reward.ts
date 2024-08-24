@@ -6,6 +6,6 @@ export default interface HistoryReward {
   historyRewardDate: Date
   usersId: number
   rewardsId: number
-  user: User
-  reward: Reward
+  users: User
+  rewards: Reward
 }

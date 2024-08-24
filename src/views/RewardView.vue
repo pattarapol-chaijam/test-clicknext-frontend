@@ -20,6 +20,7 @@ onMounted(async () => {
   currentUser.value = await authStore.getCurrentUser()
   user.value = await userStore.getUser(currentUser.value!.userId)
   historyRewards.value = await historyRewardStore.getHistoryReward(currentUser.value!.userId)
+  console.log(historyRewards.value)
 })
 </script>
 
@@ -116,7 +117,10 @@ onMounted(async () => {
 
     <v-sheet class="mx-auto" elevation="0" width="100%" style="background-color: #f4f4f4">
       <v-slide-group v-model="model" class="py-5" show-arrows>
-        <v-slide-group-item>
+        <v-slide-group-item
+          v-for="historyReward in historyRewards"
+          :key="historyReward.historyRewardId"
+        >
           <v-card
             style="background-color: white"
             class="ml-5"
@@ -126,23 +130,34 @@ onMounted(async () => {
             height="300"
             align="start"
           >
-            <v-img
-              src="https://demo-point-insurance.clicknext.com/images/donut.png"
-              cover
-              height="200px"
-            >
+            <v-img :src="historyReward.rewards.rewardImg" cover height="200px">
+              <v-card
+                style="
+                  background-color: #da4453;
+                  font-weight: bold;
+                  font-size: 12px;
+                  color: white;
+                  border: 1px solid white;
+                "
+                class="mt-2 pt-1 pl-2"
+                width="80px"
+                height="30px"
+                >Hot Deals!</v-card
+              >
             </v-img>
-            <v-list-item-subtitle style="font-size: 11px" class="ml-2 mt-2"> </v-list-item-subtitle>
+            <v-list-item-subtitle style="font-size: 11px" class="ml-2 mt-2">
+              {{ historyReward.rewards?.rewardDescription }}
+            </v-list-item-subtitle>
             <v-list-item-title style="font-size: medium; font-weight: bold" class="ml-2 mt-7">
               <v-icon color="rgb(43, 102, 211)">
                 {{ mdiAlphaPCircleOutline }}
               </v-icon>
               <span style="font-size: small; font-weight: lighter; color: #5004ec" class="ml-1">
-                200 คะแนน
+                {{ historyReward.rewards?.rewardPaypoint }} คะแนน
               </span>
             </v-list-item-title>
             <v-list-item-subtitle style="font-size: x-small" class="ml-3">
-              วันที่แลก 19 ต.ค. 2567
+              วันที่แลก {{ rewardStore.toLocalDate(historyReward.rewards?.rewardEndDate, 'short') }}
               <v-icon style="margin-left: 116px" size="20" color="#f4bd4c">
                 {{ mdiStar }}
               </v-icon>
