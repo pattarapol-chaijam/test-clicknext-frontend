@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { mdiAlphaPCircleOutline, mdiStar } from '@mdi/js'
+import { mdiAlphaPCircleOutline } from '@mdi/js'
 import { useHistoryRewardStore } from '@/stores/history_reward'
 import { onMounted, ref } from 'vue'
 import type User from '@/types/user'
 import type HistoryReward from '@/types/history_reward'
 import { useAuthStore } from '@/stores/auth'
 import { useUserStore } from '@/stores/user'
-import { useRewardStore } from '@/stores/reward'
 const userStore = useUserStore()
 const historyRewardStore = useHistoryRewardStore()
 const authStore = useAuthStore()
@@ -14,13 +13,10 @@ const model = ref(0)
 const user = ref<User>()
 const historyRewards = ref<HistoryReward[]>([])
 const currentUser = ref<User>()
-
-const rewardStore = useRewardStore()
 onMounted(async () => {
   currentUser.value = await authStore.getCurrentUser()
   user.value = await userStore.getUser(currentUser.value!.userId)
   historyRewards.value = await historyRewardStore.getHistoryReward(currentUser.value!.userId)
-  console.log(historyRewards.value)
 })
 </script>
 

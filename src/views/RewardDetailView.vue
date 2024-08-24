@@ -33,7 +33,6 @@ onMounted(async () => {
   user.value = await userStore.getUser(currentUser.value!.userId)
   reward.value = await rewardStore.getReward(+rewardId)
   historyReward.value = await historyRewardStore.getHistory(currentUser.value!.userId, +rewardId)
-  console.log(historyReward.value)
 })
 
 const saveHistoryRewards = async () => {
