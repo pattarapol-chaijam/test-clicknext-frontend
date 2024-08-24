@@ -1,8 +1,5 @@
 import axios from './axios'
 import type HistoryReward from '@/types/history_reward'
-const getHistoryRewards = () => {
-  return axios.get(`history-reward`)
-}
 
 const getHistoryReward = (userId: number) => {
   return axios.get(`history-reward/${userId}`)
@@ -16,4 +13,4 @@ function saveHistoryRewards(historyReward: any) {
   return axios.post('/history-reward', historyReward)
 }
 
-export default { getHistoryRewards, saveHistoryRewards, getHistoryReward, getHistory }
+export default { saveHistoryRewards, getHistoryReward, getHistory }

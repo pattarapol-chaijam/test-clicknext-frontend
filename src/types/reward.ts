@@ -11,6 +11,8 @@ export default interface Reward {
 
   rewardEndDate: Date
 
+  rewardDate?: Date
+
   rewardImg: string
 
   rewardAmount: number

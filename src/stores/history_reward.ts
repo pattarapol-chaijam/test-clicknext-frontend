@@ -7,15 +7,6 @@ import type Reward from '@/types/reward'
 import type HistoryReward from '@/types/history_reward'
 
 export const useHistoryRewardStore = defineStore('HistoryReward', () => {
-  async function getHistoryRewards() {
-    try {
-      const res = await historyRewardService.getHistoryRewards()
-      return res.data
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
   async function getHistoryReward(userId: number) {
     try {
       const res = await historyRewardService.getHistoryReward(userId)
@@ -34,5 +25,5 @@ export const useHistoryRewardStore = defineStore('HistoryReward', () => {
     }
   }
 
-  return { getHistoryRewards, getHistoryReward, getHistory }
+  return { getHistoryReward, getHistory }
 })

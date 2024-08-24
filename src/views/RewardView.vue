@@ -53,11 +53,11 @@ onMounted(async () => {
             height="55"
             src="https://www.svgrepo.com/show/530239/schedule.svg"
           ></v-img>
-          <v-list-item-title style="font-size: small">คะแนนใกล้หมดอายุ</v-list-item-title>
+          <v-list-item-title class="responsive-text">คะแนนใกล้หมดอายุ</v-list-item-title>
           <v-list-item-title style="font-size: medium; font-weight: bold"
             >610 คะแนน</v-list-item-title
           >
-          <v-list-item-title style="font-size: small">หมดอายุ: 30 ก.ย. 2568</v-list-item-title>
+          <v-list-item-title class="responsive-text">หมดอายุ: 30 ก.ย. 2568</v-list-item-title>
         </v-card></v-col
       >
       <v-col cols="4" align="center">
@@ -77,7 +77,7 @@ onMounted(async () => {
           <v-list-item-title style="font-size: medium; font-weight: bold"
             >ประวัติ</v-list-item-title
           >
-          <v-list-item-title style="font-size: small">ตรวจสอบประวัติด้านล่าง</v-list-item-title>
+          <v-list-item-title class="responsive-text">ตรวจสอบประวัติด้านล่าง</v-list-item-title>
         </v-card></v-col
       >
       <v-col cols="4" align="center">
@@ -93,7 +93,7 @@ onMounted(async () => {
             src="https://www.svgrepo.com/show/530249/savings.svg "
           ></v-img>
           <v-list-item-title style="font-size: medium">รับคะแนนเพิ่ม</v-list-item-title>
-          <v-list-item-title style="font-size: small; font-weight: bold"
+          <v-list-item-title style="font-weight: bold" class="responsive-text"
             >ทุกๆ 100฿ รับ 10 คะแนน
           </v-list-item-title>
         </v-card></v-col
@@ -130,25 +130,11 @@ onMounted(async () => {
             height="300"
             align="start"
           >
-            <v-img :src="historyReward.rewards.rewardImg" cover height="200px">
-              <v-card
-                style="
-                  background-color: #da4453;
-                  font-weight: bold;
-                  font-size: 12px;
-                  color: white;
-                  border: 1px solid white;
-                "
-                class="mt-2 pt-1 pl-2"
-                width="80px"
-                height="30px"
-                >Hot Deals!</v-card
-              >
-            </v-img>
+            <v-img :src="historyReward.rewards.rewardImg" cover height="200px"> </v-img>
             <v-list-item-subtitle style="font-size: 11px" class="ml-2 mt-2">
               {{ historyReward.rewards?.rewardDescription }}
             </v-list-item-subtitle>
-            <v-list-item-title style="font-size: medium; font-weight: bold" class="ml-2 mt-7">
+            <v-list-item-title style="font-size: medium; font-weight: bold" class="ml-2 mt-10">
               <v-icon color="rgb(43, 102, 211)">
                 {{ mdiAlphaPCircleOutline }}
               </v-icon>
@@ -156,15 +142,20 @@ onMounted(async () => {
                 {{ historyReward.rewards?.rewardPaypoint }} คะแนน
               </span>
             </v-list-item-title>
-            <v-list-item-subtitle style="font-size: x-small" class="ml-3">
-              วันที่แลก {{ rewardStore.toLocalDate(historyReward.rewards?.rewardEndDate, 'short') }}
-              <v-icon style="margin-left: 116px" size="20" color="#f4bd4c">
-                {{ mdiStar }}
-              </v-icon>
-            </v-list-item-subtitle>
           </v-card>
         </v-slide-group-item>
       </v-slide-group>
     </v-sheet>
   </v-container>
 </template>
+<style scoped>
+.responsive-text {
+  font-size: 12px;
+}
+
+@media (max-width: 600px) {
+  .responsive-text {
+    font-size: 10px;
+  }
+}
+</style>
